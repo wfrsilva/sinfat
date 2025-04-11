@@ -8,9 +8,9 @@ A ordenação pode ser controlada pelo usuário por meio de um botão na interfa
 <<INSERIR IMAGEM EXIBINDO OS DOIS ESTAGIOS DO BOTAO>>
 <<Ordenar mais recentes>>
 <<Ordenar mais antigos>>
-*![Ordenar mais recentes](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163907.png)*
-*![Ordenar mais antigos](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163935.png)*
-*![Botoes Ordenar](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163518.gif)*
+![Ordenar mais recentes](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163907.pngg) 
+![Ordenar mais antigos](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163935.pngg) 
+![Botoes Ordenar](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163518.giff) 
 
 ---
 
@@ -31,15 +31,27 @@ A ordenação pode ser controlada pelo usuário por meio de um botão na interfa
 - `direcaoSql`:
   - Valor derivado de `ordemDataParam`, convertido para o formato esperado pelo SQL (`ASC` ou `DESC`)
   - Usado para substituir o marcador `:ordem_sql` na query nativa
+ 
 
 - `queryOrdenada`:
   - A `QUERY_DOCUMENTOS` com o marcador `:ordem_sql` substituído pela `direcaoSql`
+  - `+ "    ORDER BY ultima_modificacao :ordem_sql\n"`
+
 
 ### Trecho relevante do Controller
 ```java
 final String ordemDataParam = Optional.ofNullable(request.getParameter("ordem")).orElse("desc");
 String direcaoSql = "asc".equalsIgnoreCase(ordemDataParam)? "ASC" : "DESC";
 final String queryOrdenada = QUERY_DOCUMENTOS.replace(":ordem_sql", direcaoSql);
+```
+
+#### Troca ordem_sql por ASC ou DESC 
+```java
+(...)
+final String queryOrdenada = QUERY_DOCUMENTOS.replace(":ordem_sql", direcaoSql);
+(...)
++ "    ORDER BY ultima_modificacao :ordem_sql\n"
+(...)
 ```
 
 ### Resultado no modelo da view
@@ -55,16 +67,23 @@ O template utiliza a variável `ordemDataAtual ` para:
 - Exibir o botão de alternância de ordenação
 - Gerar o próximo link com base no estado atual (asc ou desc)
 
-### Exemplo de trecho no template:
+### Exemplo de trecho no template (documentos.pebble):
 ```html
-<a href="?ordem={% if ordemDataAtual  == 'asc' %}desc{% else %}asc{% endif %}">
-  {% if ordemDataAtual  == 'asc' %}Mais recentes primeiro{% else %}Mais antigos primeiro{% endif %}
-</a>
+
+{% if ordemDataAtual == "asc" %}
+    <a href="?ordem=desc" class="btn btn-outline-secondary" ><i class="bi bi-sort-down"></i> Ordenar mais recentes</a>
+{% else %}
+    <a href="?ordem=asc" class="btn btn-outline-secondary"  ><i class="bi bi-sort-up"></i> Ordenar mais antigos</a>
+{% endif %}
+
 ```
 
 Este botão permite ao usuário alternar entre:
 - Mais recentes primeiro (`desc`)
+    - ![Ordenar mais recentes](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%20botao-recentes.png)
+
 - Mais antigos primeiro (`asc`)
+     - ![Ordenar mais antigos](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%20botao-antigos.png)
 
 ---
 
