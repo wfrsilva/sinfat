@@ -8,9 +8,9 @@ A ordenação pode ser controlada pelo usuário por meio de um botão na interfa
 <<INSERIR IMAGEM EXIBINDO OS DOIS ESTAGIOS DO BOTAO>>
 <<Ordenar mais recentes>>
 <<Ordenar mais antigos>>
-![Ordenar mais recentes](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163907.pngg) 
-![Ordenar mais antigos](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163935.pngg) 
-![Botoes Ordenar](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163518.giff) 
+![Ordenar mais recentes](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163907.png) 
+![Ordenar mais antigos](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163935.png) 
+![Botoes Ordenar](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163518.gif) 
 
 ---
 
