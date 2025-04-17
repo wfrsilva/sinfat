@@ -8,17 +8,17 @@ Esta documentação explica a implementação da ordenação cronológica dos do
 ## Visão Geral
 Esta feature permite exibir os documentos de um requerimento organizados e ordenados cronologicamente por data de envio (campo `ultima_modificacao`). 
 A ordenação pode ser controlada pelo usuário por meio de um botão na interface da aplicação.
-<<INSERIR IMAGEM EXIBINDO OS DOIS ESTAGIOS DO BOTAO>>
-<<Ordenar mais recentes>>
-<<Ordenar mais antigos>>
+
+<img src="https://github.com/wfrsilva/sinfat/blob/main/ordenacao-diagrama-atividades.png" alt="Diagrama de Atividades" height="600">
 
 ## Comportamento na Interface
 O usuário do SINFAT Administrativo pode alternar a ordenação clicando em um botão:
+- mostra os documentos mais novos primeiro.
 ![Ordenar mais recentes](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163907.png) 
-  - mostra os documentos mais novos primeiro.
-    
+  
+ - mostra os documentos mais antigos primeiro.   
 ![Ordenar mais antigos](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163935.png)
-  - mostra os documentos mais antigos primeiro.
+  
 
     
 ![Botoes Ordenar](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163518.gif) 
@@ -62,24 +62,12 @@ ORDER BY ultima_modificacao DESC
 ```
 Se `.../documentos/{fecCodigo}?ordem=desc` , então `ordemDataParam = "desc"`, entao `direcaoSql = "DESC"`.
 
-<< < < INSERIR DIAGRAMA DE ATIVIDADES > > >>
 
 A variável `direcaoSql` é então enviada ao modelo:
 
 ```java
 model.put("ordemDataAtual", direcaoSql.toLowerCase());
 ```
-
-## 2. Lógica no Front-end `documentos.pebble`
-
-O template utiliza a variável `ordemDataAtual` para:
-
-- Exibir o botão de alternância de ordenação
-
-- Gerar o próximo link com base no estado atual (asc ou desc)
-
-
-# PAREI AQUI AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 ### Novas Variáveis
 
@@ -95,64 +83,63 @@ O template utiliza a variável `ordemDataAtual` para:
 - `queryOrdenada`:
   - A `QUERY_DOCUMENTOS` com o marcador `:ordem_sql` substituído pela `direcaoSql`
   - `+ "    ORDER BY ultima_modificacao :ordem_sql\n"`
+ 
+  --- 
 
+## 2. Lógica no Front-end `documentos.pebble`
 
-### Trecho relevante do Controller
-```java
-final String ordemDataParam = Optional.ofNullable(request.getParameter("ordem")).orElse("desc");
-String direcaoSql = "asc".equalsIgnoreCase(ordemDataParam)? "ASC" : "DESC";
-final String queryOrdenada = QUERY_DOCUMENTOS.replace(":ordem_sql", direcaoSql);
-```
+O template utiliza a variável `ordemDataAtual` para:
 
-#### Troca ordem_sql por ASC ou DESC 
-```java
-(...)
-final String queryOrdenada = QUERY_DOCUMENTOS.replace(":ordem_sql", direcaoSql);
-(...)
-+ "    ORDER BY ultima_modificacao :ordem_sql\n"
-(...)
-```
-
-### Resultado no modelo da view
-```java
-model.put("ordemDataAtual ", direcaoSql.toLowerCase());
-```
-
----
-
-## 2. Efeito no documentos.pebble
-
-O template utiliza a variável `ordemDataAtual ` para:
 - Exibir o botão de alternância de ordenação
+
 - Gerar o próximo link com base no estado atual (asc ou desc)
 
-### Exemplo de trecho no template (documentos.pebble):
-```html
 
+
+### Código do trecho no template `documentos.pebble`:
+```html
 {% if ordemDataAtual == "asc" %}
     <a href="?ordem=desc" class="btn btn-outline-secondary" ><i class="bi bi-sort-down"></i> Ordenar mais recentes</a>
 {% else %}
     <a href="?ordem=asc" class="btn btn-outline-secondary"  ><i class="bi bi-sort-up"></i> Ordenar mais antigos</a>
 {% endif %}
-
 ```
+O valor de `ordemDataAtual` é definido no controller e enviado via `model.put(...)`.
 
-Este botão permite ao usuário alternar entre:
-- Mais recentes primeiro (`desc`)
-    - ![Ordenar mais recentes](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%20botao-recentes.png)
 
-- Mais antigos primeiro (`asc`)
-     - ![Ordenar mais antigos](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%20botao-antigos.png)
+## 3. Considerações Técnicas
+- A cláusula `ORDER BY ultima_modificacao :ordem_sql` é usada:
+  - Na CTE principal
+  - E também dentro do `JSON_AGG(...) ORDER BY ...`
 
----
+- Isso garante ordenação:
+  - Dentro de cada grupo
+  - E também na visualização geral
 
-## Considerações Técnicas
+- A variável `ordemDataAtual` é a única ponte entre controller e view no que diz respeito à ordenação.
 
-- O SQL usa duas vezes `ORDER BY ultima_modificacao :ordem_sql`, tanto na CTE principal quanto no JSON_AGG, garantindo que:
-  - Os documentos dentro de cada grupo estejam ordenados corretamente
-  - A consulta geral já venha pré-ordenada
 
-- A variável `ordemDataAtual` é a única ponte entre controller e view no que diz respeito ao controle de ordenação.
+### Futuras Melhorias Sugeridas
+
+- Adicionar suporte a ordenação por:
+  - Tipo de documento
+  - Status (enviado, aceito, rejeitado...)
+
+- Tornar a ordenação persistente entre acessos:
+  - via `sessionStorage`
+  - ou cookies (lembrar preferência do usuário)
+ 
+
+### Como Testar a Funcionalidade
+  1. Acesse `/documentos/{fceCodigo}`
+  2. Clique no botão de ordenação.
+  3. Verifique se a ordem muda corretamente entre "mais antigos" e "mais recentes".
+
+![Clique no botão de ordenação](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163518.gif) 
+ 
+
+
+
 
 
 ---
