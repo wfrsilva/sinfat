@@ -9,19 +9,19 @@ Esta documentação explica a implementação da ordenação cronológica dos do
 Esta feature permite exibir os documentos de um requerimento organizados e ordenados cronologicamente por data de envio (campo `ultima_modificacao`). 
 A ordenação pode ser controlada pelo usuário por meio de um botão na interface da aplicação.
 
-<img src="https://github.com/wfrsilva/sinfat/blob/main/ordenacao-diagrama-atividades.png" alt="Diagrama de Atividades" height="600">
+<img src="https://raw.githubusercontent.com/wfrsilva/sinfat/refs/heads/main/ordenacao-diagrama-atividades.png" alt="Diagrama de Atividades" height="600">
 
 ## Comportamento na Interface
 O usuário do SINFAT Administrativo pode alternar a ordenação clicando em um botão:
 - mostra os documentos mais novos primeiro.
-![Ordenar mais recentes](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163907.png) 
+![Ordenar mais recentes](https://raw.githubusercontent.com/wfrsilva/sinfat/refs/heads/main/feature-documentacao-ordem-cronologica%202025-04-11%20163907.png) 
   
  - mostra os documentos mais antigos primeiro.   
-![Ordenar mais antigos](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163935.png)
+![Ordenar mais antigos](https://raw.githubusercontent.com/wfrsilva/sinfat/refs/heads/main/feature-documentacao-ordem-cronologica%202025-04-11%20163935.png)
   
 
     
-![Botoes Ordenar](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163518.gif) 
+![Botoes Ordenar](https://raw.githubusercontent.com/wfrsilva/sinfat/refs/heads/main/feature-documentacao-ordem-cronologica%202025-04-11%20163518.gif) 
 
 ---
 
@@ -135,7 +135,7 @@ O valor de `ordemDataAtual` é definido no controller e enviado via `model.put(.
   2. Clique no botão de ordenação.
   3. Verifique se a ordem muda corretamente entre "mais antigos" e "mais recentes".
 
-![Clique no botão de ordenação](https://github.com/wfrsilva/sinfat/blob/main/feature-documentacao-ordem-cronologica%202025-04-11%20163518.gif) 
+![Clique no botão de ordenação](https://raw.githubusercontent.com/wfrsilva/sinfat/refs/heads/main/feature-documentacao-ordem-cronologica%202025-04-11%20163518.gif) 
  
 
 
